@@ -32,19 +32,19 @@ export class AuthService {
   }
 
   setRefreshToken({ res }) {
-    // try {
-    const refreshToken = this.jwtService.sign(
-      {},
-      {
-        secret: process.env.REFRESH_KEY,
-        expiresIn: '2w',
-      },
-    );
-    console.log('---------------------------------');
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
-    return true;
-    // } catch (err) {
-    //   throw new BadGatewayException('RefreshToken발급에 실패했습니다.');
-    // }
+    try {
+      const refreshToken = this.jwtService.sign(
+        {},
+        {
+          secret: process.env.REFRESH_KEY,
+          expiresIn: '2w',
+        },
+      );
+
+      res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
+      return true;
+    } catch (err) {
+      throw new BadGatewayException('RefreshToken발급에 실패했습니다.');
+    }
   }
 }

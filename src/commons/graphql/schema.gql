@@ -3,10 +3,11 @@
 # ------------------------------------------------------
 
 type Query {
-  login(email: String!, passsword: String!): String!
+  aaa: Boolean!
 }
 
 type Mutation {
+  login(email: String!, password: String!): String!
   createUser(createUserInput: CreateUserInput!): Boolean!
 }
 

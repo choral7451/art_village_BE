@@ -14,7 +14,7 @@ import { UserModule } from './apis/user/user.module';
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: 'http://localhost:3000',
+        origin: 'http://localhost:3001',
         credentials: true,
       },
     }),
