@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  art_village_backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/myfolder/src
+    ports:
+      - 3000:3000
+
+  art_village_database:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: 'test'
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - 3306:3306
+
+  # artVillage-redis:
+  #   image: redis:latest
+  #   ports:
+  #     - 6379:6379
