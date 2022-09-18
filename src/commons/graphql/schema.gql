@@ -2,12 +2,18 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type FetchUser {
+  email: String!
+  name: String!
+}
+
 type Query {
-  aaa: Boolean!
+  fetchLoginUser: FetchUser!
 }
 
 type Mutation {
   login(email: String!, password: String!): String!
+  SendToken(email: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Boolean!
 }
 

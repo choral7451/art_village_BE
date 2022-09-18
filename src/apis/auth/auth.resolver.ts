@@ -1,4 +1,7 @@
-import { UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadGatewayException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
@@ -10,11 +13,6 @@ export class AuthResolver {
     private readonly authService: AuthService, //
     private readonly userService: UserService,
   ) {}
-
-  @Query(() => Boolean)
-  async aaa() {
-    return true;
-  }
 
   @Mutation(() => String)
   async login(
@@ -39,5 +37,12 @@ export class AuthResolver {
     if (refreshToken) {
       return this.authService.getAccessToken({ user });
     }
+  }
+
+  @Mutation(() => Boolean)
+  async SendToken(@Args('email') email: string) {
+    const user = await this.userService.findOne({ email });
+    if (user) throw new BadGatewayException('이미 등록된 유저입니다.');
+    return true;
   }
 }
