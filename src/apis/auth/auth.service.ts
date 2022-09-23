@@ -10,7 +10,6 @@ import { User } from '../user/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as jwt from 'jsonwebtoken';
-import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
@@ -61,5 +60,9 @@ export class AuthService {
     } catch (error) {
       throw new UnauthorizedException('유효하지 않은 토큰입니다.');
     }
+  }
+
+  getToken() {
+    return String(Math.floor(Math.random() * 10 ** 6)).padStart(6, '0');
   }
 }

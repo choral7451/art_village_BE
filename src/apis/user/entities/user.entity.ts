@@ -1,10 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   @Field(() => String)
   id: string;
 
@@ -19,4 +24,12 @@ export class User {
   @Column()
   @Field(() => String)
   name: String;
+
+  @Column({ default: false })
+  @Field(() => Boolean, { nullable: true })
+  membership?: boolean;
+
+  @Column()
+  @Field(() => String, { nullable: true })
+  readonly createdAt?: String;
 }

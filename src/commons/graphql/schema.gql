@@ -2,23 +2,42 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: String!
+  email: String!
+  password: String!
+  name: String!
+  membership: Boolean
+  createdAt: String
+}
+
 type FetchUser {
   email: String!
   name: String!
+  membership: Boolean
+  createdAt: String
 }
 
 type Query {
   fetchLoginUser: FetchUser!
+  fetchUsers: [User!]!
 }
 
 type Mutation {
   login(email: String!, password: String!): String!
-  SendToken(email: String!): Boolean!
+  sendToken(email: String!): Boolean!
+  checkToken(token: String!): Boolean!
   createUser(createUserInput: CreateUserInput!): Boolean!
+  createLecture(files: [Upload!]!): [String!]!
 }
 
 input CreateUserInput {
   email: String!
   password: String!
   name: String!
+  membership: Boolean
+  createdAt: String
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
