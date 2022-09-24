@@ -8,12 +8,16 @@ import { AuthModule } from './apis/auth/auth.module';
 import { UserModule } from './apis/user/user.module';
 import { LectureModule } from './apis/lecture/lecture.module';
 import { ConfigModule } from '@nestjs/config';
+import { FileModule } from './apis/file/file.module';
+import { CategoryModule } from './apis/category/category.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
+    FileModule,
     LectureModule,
+    CategoryModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -21,10 +25,10 @@ import { ConfigModule } from '@nestjs/config';
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
-      // cors: {
-      //   origin: 'http://localhost:3001',
-      //   credentials: true,
-      // },
+      cors: {
+        origin: 'http://localhost:3001',
+        credentials: true,
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
