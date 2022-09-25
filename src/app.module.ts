@@ -10,6 +10,7 @@ import { LectureModule } from './apis/lecture/lecture.module';
 import { ConfigModule } from '@nestjs/config';
 import { FileModule } from './apis/file/file.module';
 import { CategoryModule } from './apis/category/category.module';
+import { LecturerModule } from './apis/lecturer/lecturer.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CategoryModule } from './apis/category/category.module';
     FileModule,
     LectureModule,
     CategoryModule,
+    LecturerModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

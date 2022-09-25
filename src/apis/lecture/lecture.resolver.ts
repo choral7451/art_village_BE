@@ -44,20 +44,21 @@ export class LectureResolver {
       category: category.id,
       subCategory: subCategory.id,
       image: files[0],
-      preview: files[1],
+      introduce: files[1],
       description: createLectureInput.description,
       createdAt: this.dateService.getDate(),
     };
 
     const lectureId = await this.lectureService.create({ lecture });
 
-    if (files.length > 2) {
+    if (files.length > 1) {
       Promise.all(
-        files.slice(2).map(async (el, idx) => {
+        files.slice(1).map(async (el, idx) => {
           const video = {
-            index: idx + 1,
+            index: idx,
             url: el,
             lecture: lectureId,
+            title: createLectureInput.subTitle[idx],
           };
           return await this.videoService.create({ video });
         }),

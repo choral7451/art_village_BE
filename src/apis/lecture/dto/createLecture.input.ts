@@ -15,6 +15,9 @@ export class CreateLectureInput {
   @Field(() => String)
   subCategory: string;
 
+  @Field(() => [String])
+  subTitle: string[];
+
   @Field(() => [GraphQLUpload])
   files: FileUpload[];
 
