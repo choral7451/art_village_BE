@@ -18,7 +18,7 @@ export class LectureService {
 
   async findAll() {
     return await this.lectureRepository.find({
-      relations: ['category', 'subCategory'],
+      relations: ['category', 'subCategory', 'lecturer'],
     });
   }
 }

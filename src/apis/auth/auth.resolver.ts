@@ -48,7 +48,7 @@ export class AuthResolver {
     if (user) throw new BadGatewayException('이미 등록된 유저입니다.');
 
     const token = this.authService.getToken();
-    console.log(token);
+
     await this.redisService.create({ key: token, value: token, ttl: 181 });
 
     return true;

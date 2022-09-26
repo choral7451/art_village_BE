@@ -26,7 +26,7 @@ export class Lecturer {
   @Field(() => String)
   image: String;
 
-  @Column()
+  @Column('text')
   @Field(() => String)
   profile: String;
 }

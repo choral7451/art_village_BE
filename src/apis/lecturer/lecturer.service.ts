@@ -14,7 +14,15 @@ export class LecturerService {
     return await this.lecturerRepository
       .createQueryBuilder()
       .where('name LIKE :name')
-      .setParameter('name', `%${name}%`)
+      .setParameter('name', `%${name.trim()}%`)
       .getMany();
+  }
+
+  async findAll() {
+    return await this.lecturerRepository.find();
+  }
+
+  async create({ data }) {
+    await this.lecturerRepository.save({ ...data });
   }
 }
