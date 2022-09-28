@@ -2,7 +2,14 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Category } from 'src/apis/category/entities/category.entity';
 import { SubCategory } from 'src/apis/category/entities/subCategory.entity';
 import { Lecturer } from 'src/apis/lecturer/entities/lecturer.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Video } from 'src/apis/video/entities/video.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -23,6 +30,10 @@ export class Lecture {
   @Field(() => String)
   introduce: String;
 
+  @Column({ nullable: true })
+  @Field(() => String, { nullable: true })
+  tag: String;
+
   @Column('text')
   @Field(() => String)
   description: String;
@@ -42,4 +53,8 @@ export class Lecture {
   @ManyToOne(() => Lecturer)
   @Field(() => Lecturer)
   lecturer: Lecturer;
+
+  @OneToMany(() => Video, (video) => video.lecture)
+  @Field(() => [Video])
+  video: Video[];
 }

@@ -9,6 +9,9 @@ export class CreateLectureInput {
   @Field(() => String)
   title: string;
 
+  @Field(() => String, { nullable: true })
+  tag?: string;
+
   @Field(() => Number)
   category: number;
 

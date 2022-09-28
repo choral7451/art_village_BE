@@ -44,17 +44,28 @@ type Lecture {
   title: String!
   image: String!
   introduce: String!
+  tag: String
   description: String!
   createdAt: String
   category: Category!
   subCategory: SubCategory!
   lecturer: Lecturer!
+  video: [Video!]!
+}
+
+type Video {
+  id: Float!
+  index: Int!
+  title: String
+  url: String
+  lecture: Lecture!
 }
 
 type Query {
   fetchLoginUser: FetchUser!
   fetchUsers: [User!]!
-  fetchLecture: [Lecture!]!
+  fetchLecture(num: Float): [Lecture!]!
+  findLecture(num: Float!): Lecture!
   fetchCategory: [Category!]!
   fetchSubCategory(num: Float!): [SubCategory!]!
   findLecturer(name: String!): [Lecturer!]!
@@ -81,6 +92,7 @@ input CreateUserInput {
 input CreateLectureInput {
   lecturer: Float!
   title: String!
+  tag: String
   category: Float!
   subCategory: Float!
   subTitle: [String!]!

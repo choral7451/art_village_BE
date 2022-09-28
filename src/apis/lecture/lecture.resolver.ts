@@ -18,8 +18,13 @@ export class LectureResolver {
   ) {}
 
   @Query(() => [Lecture])
-  fetchLecture() {
-    return this.lectureService.findAll();
+  fetchLecture(@Args('num', { nullable: true }) num: number) {
+    return this.lectureService.findAll({ num });
+  }
+
+  @Query(() => Lecture)
+  findLecture(@Args('num') num: number) {
+    return this.lectureService.findOne({ num });
   }
 
   @Mutation(() => Boolean)
@@ -35,6 +40,7 @@ export class LectureResolver {
       title: createLectureInput.title,
       category: createLectureInput.category,
       subCategory: createLectureInput.subCategory,
+      tag: createLectureInput.tag,
       image: files[0],
       introduce: files[1],
       description: createLectureInput.description,

@@ -16,9 +16,18 @@ export class LectureService {
     return result.id;
   }
 
-  async findAll() {
+  async findAll({ num }) {
     return await this.lectureRepository.find({
       relations: ['category', 'subCategory', 'lecturer'],
+      order: { id: 'DESC' },
+      take: num,
+    });
+  }
+
+  async findOne({ num }) {
+    return await this.lectureRepository.findOne({
+      where: { id: num },
+      relations: ['category', 'subCategory', 'lecturer', 'video'],
     });
   }
 }
