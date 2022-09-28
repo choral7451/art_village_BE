@@ -13,4 +13,9 @@ export class CategoryResolver {
   fetchCategory() {
     return this.categoryService.findAllCategory();
   }
+
+  @Query(() => [SubCategory])
+  fetchSubCategory(@Args('num') num: number) {
+    return this.categoryService.findAllSubCategory({ num });
+  }
 }

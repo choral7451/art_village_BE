@@ -30,19 +30,11 @@ export class LectureResolver {
       files: createLectureInput.files,
     });
 
-    const category = await this.categoryService.findOneCategory({
-      name: createLectureInput.category,
-    });
-
-    const subCategory = await this.categoryService.findOneSubCategory({
-      name: createLectureInput.subCategory,
-    });
-
     const lecture = {
       lecturer: createLectureInput.lecturer,
       title: createLectureInput.title,
-      category: category.id,
-      subCategory: subCategory.id,
+      category: createLectureInput.category,
+      subCategory: createLectureInput.subCategory,
       image: files[0],
       introduce: files[1],
       description: createLectureInput.description,

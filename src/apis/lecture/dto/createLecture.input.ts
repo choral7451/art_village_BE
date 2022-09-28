@@ -3,17 +3,17 @@ import { FileUpload, GraphQLUpload } from 'graphql-upload';
 
 @InputType()
 export class CreateLectureInput {
-  @Field(() => String)
-  lecturer: string;
+  @Field(() => Number)
+  lecturer: number;
 
   @Field(() => String)
   title: string;
 
-  @Field(() => String)
-  category: string;
+  @Field(() => Number)
+  category: number;
 
-  @Field(() => String)
-  subCategory: string;
+  @Field(() => Number)
+  subCategory: number;
 
   @Field(() => [String])
   subTitle: string[];

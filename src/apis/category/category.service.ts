@@ -20,6 +20,14 @@ export class CategoryService {
     });
   }
 
+  async findAllSubCategory({ num }) {
+    return await this.subCategoryRepository.find({
+      where: {
+        category: num,
+      },
+    });
+  }
+
   async findOneCategory({ name }) {
     return await this.categoryRepository.findOne({
       where: { name },

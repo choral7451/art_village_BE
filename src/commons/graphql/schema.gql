@@ -56,6 +56,7 @@ type Query {
   fetchUsers: [User!]!
   fetchLecture: [Lecture!]!
   fetchCategory: [Category!]!
+  fetchSubCategory(num: Float!): [SubCategory!]!
   findLecturer(name: String!): [Lecturer!]!
   fetchLecturers: [Lecturer!]!
 }
@@ -78,10 +79,10 @@ input CreateUserInput {
 }
 
 input CreateLectureInput {
-  lecturer: String!
+  lecturer: Float!
   title: String!
-  category: String!
-  subCategory: String!
+  category: Float!
+  subCategory: Float!
   subTitle: [String!]!
   files: [Upload!]!
   description: String!
