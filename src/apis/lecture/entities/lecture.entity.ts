@@ -2,6 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { Category } from 'src/apis/category/entities/category.entity';
 import { SubCategory } from 'src/apis/category/entities/subCategory.entity';
 import { Lecturer } from 'src/apis/lecturer/entities/lecturer.entity';
+import { User } from 'src/apis/user/entities/user.entity';
 import { Video } from 'src/apis/video/entities/video.entity';
 import {
   Column,
@@ -53,6 +54,10 @@ export class Lecture {
   @ManyToOne(() => Lecturer)
   @Field(() => Lecturer)
   lecturer: Lecturer;
+
+  @ManyToOne(() => User)
+  @Field(() => User)
+  user: User;
 
   @OneToMany(() => Video, (video) => video.lecture)
   @Field(() => [Video])

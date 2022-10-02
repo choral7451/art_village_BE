@@ -11,15 +11,18 @@ import { ConfigModule } from '@nestjs/config';
 import { FileModule } from './apis/file/file.module';
 import { CategoryModule } from './apis/category/category.module';
 import { LecturerModule } from './apis/lecturer/lecturer.module';
+import { PaymentModule } from './apis/payment/payment.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     FileModule,
+    PaymentModule,
     LectureModule,
     CategoryModule,
     LecturerModule,
+
     ConfigModule.forRoot({
       isGlobal: true,
     }),

@@ -33,17 +33,23 @@ export class AuthResolver {
     if (!isAuth)
       throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다.');
 
+    const userData = {
+      email: user.email,
+      name: user.name,
+    };
+
     const refreshToken = this.authService.setRefreshToken({
+      userData,
       res: context.req.res,
     });
 
     if (refreshToken) {
-      return this.authService.getAccessToken({ user });
+      return this.authService.getAccessToken({ userData });
     }
   }
 
   @Mutation(() => Boolean)
-  async sendToken(@Args('email') email: string) {
+  async sendEmailCheckToken(@Args('email') email: string) {
     const user = await this.userService.findOne({ email });
     if (user) throw new BadGatewayException('이미 등록된 유저입니다.');
 
@@ -55,10 +61,19 @@ export class AuthResolver {
   }
 
   @Mutation(() => Boolean)
-  async checkToken(@Args('token') token: string) {
+  async checkEmailToken(@Args('token') token: string) {
     const result = await this.redisService.fetch({ key: token });
     return result
       ? true
       : new UnauthorizedException('인증번호가 일치하지 않습니다.');
+  }
+
+  @Mutation(() => String)
+  async restoreAccessToken(
+    @Context() context: any, //
+  ) {
+    const refreshToken = context.req.headers.cookie.split('refreshToken=')[1];
+    const userData = await this.authService.refreshTokenCheck({ refreshToken });
+    return await this.authService.getAccessToken({ userData });
   }
 }

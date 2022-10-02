@@ -3,7 +3,6 @@ import {
   BadGatewayException,
   Injectable,
   UnauthorizedException,
-  UnprocessableEntityException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user/entities/user.entity';
@@ -21,10 +20,10 @@ export class AuthService {
     private readonly userService: UserService,
   ) {}
 
-  getAccessToken({ user }) {
+  getAccessToken({ userData }) {
     try {
       return this.jwtService.sign(
-        { email: user.email, name: user.name },
+        { email: userData.email, name: userData.name },
         { secret: process.env.ACCESS_KEY, expiresIn: '1h' },
       );
     } catch (err) {
@@ -32,10 +31,10 @@ export class AuthService {
     }
   }
 
-  setRefreshToken({ res }) {
+  setRefreshToken({ userData, res }) {
     try {
       const refreshToken = this.jwtService.sign(
-        {},
+        { email: userData.email, name: userData.name },
         {
           secret: process.env.REFRESH_KEY,
           expiresIn: '2w',
@@ -64,5 +63,14 @@ export class AuthService {
 
   getToken() {
     return String(Math.floor(Math.random() * 10 ** 6)).padStart(6, '0');
+  }
+
+  async refreshTokenCheck({ refreshToken }) {
+    try {
+      const result = jwt.verify(refreshToken, process.env.REFRESH_KEY);
+      return { email: result['email'], name: result['name'] };
+    } catch {
+      throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+    }
   }
 }
