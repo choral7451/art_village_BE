@@ -1,4 +1,6 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { Args, Mutation, Resolver, Query, Context } from '@nestjs/graphql';
+import { RedisService } from 'src/commons/redis/redis.service';
 import { AuthService } from '../auth/auth.service';
 import { CreateUserInput } from './dto/createUser.input';
 import { FetchUser } from './dto/fetchUser.output';
@@ -10,6 +12,7 @@ export class UserResolver {
   constructor(
     private readonly userService: UserService, //
     private readonly authService: AuthService,
+    private readonly redisService: RedisService,
   ) {}
 
   @Query(() => FetchUser)
@@ -17,9 +20,13 @@ export class UserResolver {
     @Context() context: any, //
   ) {
     const accessToken = context.req.headers.authorization.split(' ')[1];
+    const logout = await this.redisService.fetch({ key: accessToken });
 
-    const user = await this.authService.accessTokenCheck({ accessToken });
-    return user;
+    if (logout) {
+      throw new InternalServerErrorException('로그아웃 처리된 토큰입니다.');
+    }
+
+    return await this.authService.accessTokenCheck({ accessToken });
   }
 
   @Query(() => [User])

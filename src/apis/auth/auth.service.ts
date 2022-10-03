@@ -55,20 +55,25 @@ export class AuthService {
       return {
         email: checkToken['email'],
         name: checkToken['name'],
+        restTtl: checkToken['exp'] - Math.floor(Date.now() / 1000),
       };
     } catch (error) {
       throw new UnauthorizedException('유효하지 않은 토큰입니다.');
     }
   }
 
-  getToken() {
+  getEmailToken() {
     return String(Math.floor(Math.random() * 10 ** 6)).padStart(6, '0');
   }
 
   async refreshTokenCheck({ refreshToken }) {
     try {
       const result = jwt.verify(refreshToken, process.env.REFRESH_KEY);
-      return { email: result['email'], name: result['name'] };
+      return {
+        email: result['email'],
+        name: result['name'],
+        restTtl: result['exp'] - Math.floor(Date.now() / 1000),
+      };
     } catch {
       throw new UnauthorizedException('유효하지 않은 토큰입니다.');
     }

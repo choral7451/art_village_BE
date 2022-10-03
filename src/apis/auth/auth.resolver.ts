@@ -1,5 +1,6 @@
 import {
   BadGatewayException,
+  InternalServerErrorException,
   UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -49,12 +50,41 @@ export class AuthResolver {
   }
 
   @Mutation(() => Boolean)
+  async logout(@Context() context: any) {
+    const accessToken = context.req.headers.authorization.replace(
+      'Bearer ',
+      '',
+    );
+
+    const refreshToken = context.req.headers.cookie.split('refreshToken=')[1];
+
+    Promise.all([
+      await this.authService.refreshTokenCheck({ refreshToken }),
+      await this.authService.accessTokenCheck({ accessToken }),
+    ]).then((values) => {
+      Promise.all([
+        this.redisService.create({
+          key: refreshToken,
+          value: 1,
+          ttl: values[0].restTtl,
+        }),
+        this.redisService.create({
+          key: accessToken,
+          value: 1,
+          ttl: values[1].restTtl,
+        }),
+      ]);
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
   async sendEmailCheckToken(@Args('email') email: string) {
     const user = await this.userService.findOne({ email });
     if (user) throw new BadGatewayException('이미 등록된 유저입니다.');
 
-    const token = this.authService.getToken();
-
+    const token = this.authService.getEmailToken();
     await this.redisService.create({ key: token, value: token, ttl: 181 });
 
     return true;
@@ -73,6 +103,12 @@ export class AuthResolver {
     @Context() context: any, //
   ) {
     const refreshToken = context.req.headers.cookie.split('refreshToken=')[1];
+    const logout = await this.redisService.fetch({ key: refreshToken });
+
+    if (logout) {
+      throw new InternalServerErrorException('로그아웃 처리된 토큰입니다.');
+    }
+
     const userData = await this.authService.refreshTokenCheck({ refreshToken });
     return await this.authService.getAccessToken({ userData });
   }

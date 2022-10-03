@@ -22,7 +22,6 @@ import { PaymentModule } from './apis/payment/payment.module';
     LectureModule,
     CategoryModule,
     LecturerModule,
-
     ConfigModule.forRoot({
       isGlobal: true,
     }),

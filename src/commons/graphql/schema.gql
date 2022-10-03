@@ -86,6 +86,7 @@ type Query {
 
 type Mutation {
   login(email: String!, password: String!): String!
+  logout: Boolean!
   sendEmailCheckToken(email: String!): Boolean!
   checkEmailToken(token: String!): Boolean!
   restoreAccessToken: String!
