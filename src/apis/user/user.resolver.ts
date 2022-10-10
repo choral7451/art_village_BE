@@ -19,14 +19,18 @@ export class UserResolver {
   async fetchLoginUser(
     @Context() context: any, //
   ) {
-    const accessToken = context.req.headers.authorization.split(' ')[1];
-    const logout = await this.redisService.fetch({ key: accessToken });
+    try {
+      const accessToken = context.req.headers.authorization.split(' ')[1];
+      const logout = await this.redisService.fetch({ key: accessToken });
 
-    if (logout) {
-      throw new InternalServerErrorException('로그아웃 처리된 토큰입니다.');
+      if (logout) {
+        throw new InternalServerErrorException('로그아웃 처리된 토큰입니다.');
+      }
+
+      return await this.authService.accessTokenCheck({ accessToken });
+    } catch (error) {
+      throw new InternalServerErrorException('올바르지 않은 토큰입니다.');
     }
-
-    return await this.authService.accessTokenCheck({ accessToken });
   }
 
   @Query(() => [User])
